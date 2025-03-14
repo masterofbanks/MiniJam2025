@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Refresh
   - HomeButton
+  - GameManager
   layers:
   - Default
   - TransparentFX

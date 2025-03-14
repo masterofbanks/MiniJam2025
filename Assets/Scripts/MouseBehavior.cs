@@ -36,6 +36,7 @@ public class MouseBehavior : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("Refresh"))
             {
                 Debug.Log("Hit Refresh");
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().SetNewSubs();
             }
 
             else if (hit.collider.gameObject.CompareTag("HomeButton"))
