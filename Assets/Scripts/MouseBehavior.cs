@@ -37,6 +37,13 @@ public class MouseBehavior : MonoBehaviour
             {
                 Debug.Log("Hit Refresh");
             }
+
+            else if (hit.collider.gameObject.CompareTag("HomeButton"))
+            {
+                Debug.Log("Hit Home Button");
+            }
+                 
+            
         }
     }
 
