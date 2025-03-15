@@ -12,7 +12,12 @@ public class SkyDiverController : MonoBehaviour
     private int health;
     private int starting_Health;
 
-
+    [Header("Near Miss Values")]
+    public float nearMiss;
+    public float superNearMiss;
+    public float ultraNearMiss;
+    public GameObject NearMissText;
+    
 
     [Header("Sky Diving Positions")]
     public Transform left_position;
@@ -121,12 +126,35 @@ public class SkyDiverController : MonoBehaviour
 
     private void HandleMisses()
     {
-        if (DirectionalInput.x != 0 && distanceToEnemy < 10f && transform.position != target && showNearMiss)
+        if (DirectionalInput.x != 0 && distanceToEnemy < nearMiss && transform.position != target && showNearMiss)
         {
             showNearMiss = false;
-            Debug.Log("near Miss!!");
             Debug.Log(distanceToEnemy);
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount++;
+            NearMissText.GetComponent<NMNotifierBehavior>().RestartTimeAlive();
+
+            if (distanceToEnemy > superNearMiss)
+            {
+                Debug.Log("near Miss!!");
+                NearMissText.GetComponent<NMNotifierBehavior>().text = "Near Miss!";
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount++;
+
+            }
+
+            else if(distanceToEnemy > ultraNearMiss)
+            {
+                Debug.Log("Super Near Miss!!");
+                NearMissText.GetComponent<NMNotifierBehavior>().text = "Super Near Miss!";
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount+=3;
+            }
+
+            else if(distanceToEnemy > 0.3f)
+            {
+                Debug.Log("Ultra Near Miss!!");
+                NearMissText.GetComponent<NMNotifierBehavior>().text = "Ultra Near Miss!";
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount += 5;
+            }
+
+
         }
     }
 
