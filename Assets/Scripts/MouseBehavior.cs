@@ -35,19 +35,19 @@ public class MouseBehavior : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Refresh"))
             {
-                Debug.Log("Hit Refresh");
+                //Debug.Log("Hit Refresh");
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().SetNewSubs();
             }
 
             else if (hit.collider.gameObject.CompareTag("HomeButton"))
             {
-                Debug.Log("Hit Home Button");
+                //Debug.Log("Hit Home Button");
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().GoHomeScreen();
             }
 
             else if (hit.collider.gameObject.CompareTag("X"))
             {
-                Debug.Log("Hit X");
+                //Debug.Log("Hit X");
                 GameObject.FindWithTag("Ad").GetComponent<Ad_Behavior>().Clicked_X();
 
             }

@@ -29,9 +29,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Enemy Stuff")]
     public GameObject enemy;
+    public GameObject warning;
     public float enemySpeed;
     public float time_between_enemy_spawns;
     public Transform[] e_spawn_positions;
+    public Transform[] w_spawn_positions;
 
 
     [Header("Text Fields")]
@@ -112,8 +114,10 @@ public class GameManager : MonoBehaviour
         System.Random rand = new System.Random();
         int randNum = rand.Next(0, 3);
         GameObject e_object = Instantiate(enemy, e_spawn_positions[randNum].position, e_spawn_positions[randNum].rotation);
+        GameObject w_object = Instantiate(warning, w_spawn_positions[randNum].position, w_spawn_positions[randNum].rotation);
         e_object.GetComponent<Rigidbody2D>().velocity = new Vector2(0, enemySpeed);
     }
+
 
     public void SetNewSubs()
     {
@@ -124,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     private void ChoosePhoneEvent(int index)
     {
-        Debug.Log(index);
+        //Debug.Log(index);
         switch (index)
         {
             case 0:
