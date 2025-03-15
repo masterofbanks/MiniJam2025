@@ -42,9 +42,29 @@ public class MouseBehavior : MonoBehaviour
             else if (hit.collider.gameObject.CompareTag("HomeButton"))
             {
                 Debug.Log("Hit Home Button");
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().GoHomeScreen();
             }
-                 
+
+            else if (hit.collider.gameObject.CompareTag("X"))
+            {
+                Debug.Log("Hit X");
+                GameObject.FindWithTag("Ad").GetComponent<Ad_Behavior>().Clicked_X();
+
+            }
+
+            else if (hit.collider.gameObject.CompareTag("RightButton"))
+            {
+                hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().MoveApps();
+            }
+
+            else if (hit.collider.gameObject.CompareTag("Youtube"))
+            {
+                hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().EndHomeScreen();
+            }
+
             
+
+
         }
     }
 
