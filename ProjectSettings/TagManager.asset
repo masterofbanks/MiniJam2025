@@ -12,6 +12,7 @@ TagManager:
   - Youtube
   - RightButton
   - HomeScreen
+  - Enemy
   layers:
   - Default
   - TransparentFX

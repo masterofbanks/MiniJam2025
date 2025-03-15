@@ -27,6 +27,13 @@ public class GameManager : MonoBehaviour
     public GameObject CrashNoticeText;
     public GameObject HomeScreen;
 
+    [Header("Enemy Stuff")]
+    public GameObject enemy;
+    public float enemySpeed;
+    public float time_between_enemy_spawns;
+    public Transform[] e_spawn_positions;
+
+
     [Header("Text Fields")]
     public GameObject SubCountText;
     public GameObject TotalCountText;
@@ -38,6 +45,7 @@ public class GameManager : MonoBehaviour
     private int CurrentSubCount;
     private float t_sub;
     private float t_phone;
+    private float t_enemy;
     private bool inPhoneEvent;
     private int index;
     // Start is called before the first frame update
@@ -85,7 +93,26 @@ public class GameManager : MonoBehaviour
             t_phone += Time.deltaTime;
         }
 
+        if(t_enemy > time_between_enemy_spawns)
+        {
+            SpawnEnemy();
+            t_enemy = 0;
+        }
+
+        else
+        {
+            t_enemy += Time.deltaTime;
+        }
+
         
+    }
+
+    private void SpawnEnemy()
+    {
+        System.Random rand = new System.Random();
+        int randNum = rand.Next(0, 3);
+        GameObject e_object = Instantiate(enemy, e_spawn_positions[randNum].position, e_spawn_positions[randNum].rotation);
+        e_object.GetComponent<Rigidbody2D>().velocity = new Vector2(0, enemySpeed);
     }
 
     public void SetNewSubs()
