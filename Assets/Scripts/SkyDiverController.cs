@@ -8,6 +8,11 @@ public class SkyDiverController : MonoBehaviour
     [Header("Diver Physics")]
     public float horizontal_speed;
     public LayerMask EnemyMask;
+    public GameObject[] hearts;
+    private int health;
+    private int starting_Health;
+
+
 
     [Header("Sky Diving Positions")]
     public Transform left_position;
@@ -26,7 +31,7 @@ public class SkyDiverController : MonoBehaviour
     private float distanceToEnemy;
     private bool showNearMiss;
     private bool hit;
-    public float hitDUration;
+    private float hitDuration = 0.1f;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,6 +39,8 @@ public class SkyDiverController : MonoBehaviour
         distanceToEnemy = 10000;
         showNearMiss = true;
         hit = false;
+        starting_Health = hearts.Length * 2;
+        health = starting_Health;
     }
 
     private void Awake()
@@ -48,6 +55,7 @@ public class SkyDiverController : MonoBehaviour
         HandleMisses();
         ShootRay();
         HandleInput();
+        HandleHealth();
         var step = horizontal_speed * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, target, step);
     }
@@ -81,6 +89,33 @@ public class SkyDiverController : MonoBehaviour
 
             }
 
+        }
+    }
+
+    private void HandleHealth()
+    {
+        int i = health - 1;
+        int s = i % 2;
+        int i_heart = i / 2;
+
+        GameObject target_heart = hearts[i_heart];
+        if(health != 0)
+        {
+            if (i_heart < starting_Health / 2 - 1)
+            {
+                hearts[i_heart + 1].GetComponent<HeartBehavior>().state = HeartBehavior.State.empty;
+
+            }
+
+            if (s == 0)
+            {
+                hearts[i_heart].GetComponent<HeartBehavior>().state = HeartBehavior.State.half;
+            }
+        }
+
+        else
+        {
+            hearts[0].GetComponent<HeartBehavior>().state = HeartBehavior.State.empty;
         }
     }
 
@@ -123,7 +158,12 @@ public class SkyDiverController : MonoBehaviour
     IEnumerator HitRoutine()
     {
         hit = true;
-        yield return new WaitForSeconds(hitDUration);
+        if(health > 0)
+        {
+            health--;
+
+        }
+        yield return new WaitForSeconds(hitDuration);
         hit = false;
     }
 
