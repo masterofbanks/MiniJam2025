@@ -47,7 +47,7 @@ public class MouseBehavior : MonoBehaviour
 
             else if (hit.collider.gameObject.CompareTag("X"))
             {
-                //Debug.Log("Hit X");
+                Debug.Log("Hit X");
                 GameObject.FindWithTag("Ad").GetComponent<Ad_Behavior>().Clicked_X();
 
             }

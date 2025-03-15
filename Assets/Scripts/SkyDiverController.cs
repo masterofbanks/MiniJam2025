@@ -91,6 +91,7 @@ public class SkyDiverController : MonoBehaviour
             showNearMiss = false;
             Debug.Log("near Miss!!");
             Debug.Log(distanceToEnemy);
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount++;
         }
     }
 

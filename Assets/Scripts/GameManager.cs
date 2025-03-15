@@ -35,10 +35,18 @@ public class GameManager : MonoBehaviour
     public Transform[] e_spawn_positions;
     public Transform[] w_spawn_positions;
 
+    [Header("Diver Side Valuues")]
+    public float starting_altitude;
+    public float current_altitude;
+    public float nearMissCount;
+    public float falling_velo;
+
 
     [Header("Text Fields")]
     public GameObject SubCountText;
     public GameObject TotalCountText;
+    public GameObject Altitude_text;
+    public GameObject NearMissCount_text;
 
     
 
@@ -61,6 +69,7 @@ public class GameManager : MonoBehaviour
         inPhoneEvent = false;
         CrashNoticeText.SetActive(false);
         index = 0;
+        current_altitude = starting_altitude;
     }
 
     // Update is called once per frame
@@ -69,6 +78,10 @@ public class GameManager : MonoBehaviour
         
         SubCountText.GetComponent<TextMeshPro>().text = "New Subs: " + newSubs.ToString();
         TotalCountText.GetComponent<TextMeshPro>().text = "Total Subs: " + RefreshCount.ToString();
+        Altitude_text.GetComponent<TextMeshPro>().text = "Altitude: " + current_altitude.ToString();
+        NearMissCount_text.GetComponent<TextMeshPro>().text = "Near Miss Count: " + nearMissCount.ToString();
+
+        CalculateAltitude();
 
         if(t_sub > time_between_increments && !inPhoneEvent)
         {
@@ -109,6 +122,13 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void CalculateAltitude()
+    {
+        
+        
+        current_altitude = (int)(current_altitude - falling_velo * (float)Time.deltaTime );
+
+    }
     private void SpawnEnemy()
     {
         System.Random rand = new System.Random();
@@ -138,6 +158,7 @@ public class GameManager : MonoBehaviour
                 CrashEvent();
                 break;
             default:
+                AdEvent();
                 break;
 
         }
