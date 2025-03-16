@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Crash Values")]
     public GameObject CrashNoticeText;
+    public GameObject DisconnectNoticeText;
     public GameObject HomeScreen;
 
     [Header("Enemy Stuff")]
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     public float nearMissCount;
     public float falling_velo;
     public int missesToTP;
+    public Transform background_target;
 
 
     [Header("Text Fields")]
@@ -73,6 +75,7 @@ public class GameManager : MonoBehaviour
         t_phone = 0;
         inPhoneEvent = false;
         CrashNoticeText.SetActive(false);
+        DisconnectNoticeText.SetActive(false);
         index = 0;
         current_altitude = starting_altitude;
         comboNumber = 1;
@@ -107,7 +110,7 @@ public class GameManager : MonoBehaviour
         {
             inPhoneEvent = true;
             System.Random rand = new System.Random();
-            index = rand.Next(0, 2);
+            index = rand.Next(0, 3);
             ChoosePhoneEvent(index);
             t_phone = 0;
         }
@@ -133,9 +136,9 @@ public class GameManager : MonoBehaviour
             comboNumber = (comboNumber - decreaseFactor * Time.deltaTime);
         }
 
-        if(time_between_enemy_spawns > 1.5f)
+        if(time_between_enemy_spawns > 0.85f)
         {
-            time_between_enemy_spawns -= 0.001f * Time.deltaTime;
+            time_between_enemy_spawns -= 0.0025f * Time.deltaTime;
 
         }
 
@@ -148,6 +151,8 @@ public class GameManager : MonoBehaviour
         {
             TPButton.SetActive(false);
         }
+
+        falling_velo += 0.0002f * Time.deltaTime;
 
     }
 
@@ -186,6 +191,9 @@ public class GameManager : MonoBehaviour
             case 1:
                 CrashEvent();
                 break;
+            case 2:
+                DisconnectEvent();
+                break;
             default:
                 AdEvent();
                 break;
@@ -223,6 +231,7 @@ public class GameManager : MonoBehaviour
     private void AdEvent()
     {
         Instantiate(Ad, black_screen_pos.position, black_screen_pos.rotation);
+        RefreshButton.SetActive(false);
     }
 
     private void CrashEvent()
@@ -244,11 +253,27 @@ public class GameManager : MonoBehaviour
 
     public void GoHomeScreen()
     {
-        if(index == 1 && inPhoneEvent)
+        if((index == 1 || index == 2) && inPhoneEvent)
         {
             Instantiate(HomeScreen, black_screen_pos.position, black_screen_pos.rotation);
 
         }
+    }
+
+    public void DisconnectEvent()
+    {
+        DisconnectNoticeText.SetActive(true);
+        SubCountText.SetActive(false);
+        TotalCountText.SetActive(false);
+        RefreshButton.SetActive(false);
+    }
+
+    public void CleanUpDisconnectEvent()
+    {
+        DisconnectNoticeText.SetActive(false);
+        SubCountText.SetActive(true);
+        TotalCountText.SetActive(true);
+        RefreshButton.SetActive(true);
     }
 
     IEnumerator RefreshRoutine()

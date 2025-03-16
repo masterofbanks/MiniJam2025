@@ -59,12 +59,26 @@ public class MouseBehavior : MonoBehaviour
 
             else if (hit.collider.gameObject.CompareTag("Youtube"))
             {
-                hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().EndHomeScreen();
+                if(GameObject.FindWithTag("GameManager").GetComponent<GameManager>().GetPhoneGameIndex() == 1)
+                    hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().EndHomeScreen();
             }
 
             else if (hit.collider.gameObject.CompareTag("TP"))
             {
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().RestartAltitude();
+            }
+
+            else if (hit.collider.gameObject.CompareTag("Settings"))
+            {
+                hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().MoveBar();
+            }
+
+            else if (hit.collider.gameObject.CompareTag("Wifi"))
+            {
+                if (GameObject.FindWithTag("GameManager").GetComponent<GameManager>().GetPhoneGameIndex() == 2)
+                {
+                    hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().EndHomeScreen();
+                }
             }
 
             

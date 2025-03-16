@@ -121,7 +121,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Clouds V2
     originalName: 
-    pivot: {x: 0.51376146, y: -0.10576923}
+    pivot: {x: 0.51376146, y: -0.104761906}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -129,7 +129,7 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 109
-      height: 104
+      height: 105
     spriteID: ccfcc33f7bb806f4fb8d43cb720ecb80
     spriteBone: []
     spriteOutline: []
@@ -154,7 +154,7 @@ ScriptedImporter:
         x: 8
         y: 11
         width: 109
-        height: 104
+        height: 105
       spriteId: ccfcc33f7bb806f4fb8d43cb720ecb80
     linkedCells: []
     parentIndex: -1

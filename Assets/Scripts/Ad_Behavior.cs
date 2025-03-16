@@ -27,7 +27,7 @@ public class Ad_Behavior : MonoBehaviour
         if (num_Xs > numClicks)
         {
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().Set_InPhoneEvent(false);
-
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().CleanUpCrashEvent();
             Destroy(gameObject);
         }
     }
