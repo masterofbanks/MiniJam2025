@@ -68,10 +68,11 @@ public class GameManager : MonoBehaviour
     public GameObject NearMissCount_text;
     public GameObject ComboText;
     public GameObject TPButton;
+    public GameObject Tutorials;
 
 
 
-    public int RefreshCount;
+    private int RefreshCount;
     private int newSubs;
     private int CurrentSubCount;
     private float t_sub;
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour
             else if (!inPhoneEvent)
             {
                 t_sub += Time.deltaTime;
+                Tutorials.GetComponent<TextMeshPro>().text = "";
             }
 
             if (t_phone > time_between_phone_events && !inPhoneEvent)
@@ -218,18 +220,23 @@ public class GameManager : MonoBehaviour
         switch (index)
         {
             case 0:
+                Tutorials.GetComponent<TextMeshPro>().text = "Click the Xs to close out the Ad!";
                 AdEvent();
                 break;
             case 1:
+                Tutorials.GetComponent<TextMeshPro>().text = "Click the Home Button, then the white rectangle, then the red square!";
                 CrashEvent();
                 break;
             case 2:
+                Tutorials.GetComponent<TextMeshPro>().text = "Click the Home Button, then the grey square, then the wifi button!";
                 DisconnectEvent();
                 break;
             case 3:
+                Tutorials.GetComponent<TextMeshPro>().text = "Click the On Button, then input the code!";
                 OffEvent();
                 break;
             default:
+                Tutorials.GetComponent<TextMeshPro>().text = "";
                 AdEvent();
                 break;
 
