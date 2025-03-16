@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         SubCountText.GetComponent<TextMeshPro>().text = "New Subs: " + newSubs.ToString();
         TotalCountText.GetComponent<TextMeshPro>().text = "Total Subs: " + RefreshCount.ToString();
         Altitude_text.GetComponent<TextMeshPro>().text = "Altitude: " + current_altitude.ToString();
-        NearMissCount_text.GetComponent<TextMeshPro>().text = "Near Miss Count: " + nearMissCount.ToString();
+        NearMissCount_text.GetComponent<TextMeshPro>().text = "Near Misses: " + nearMissCount.ToString();
         int test = (int)(comboNumber);
         ComboText.GetComponent<TextMeshPro>().text = "Combo: " + test.ToString();
 

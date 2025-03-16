@@ -149,7 +149,7 @@ public class SkyDiverController : MonoBehaviour
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ChangeComboNumber("Super Near Miss!");
             }
 
-            else if(distanceToEnemy > 0.6f)
+            else if(distanceToEnemy > 0.2f)
             {
                 Debug.Log("Ultra Near Miss!!");
                 NearMissText.GetComponent<NMNotifierBehavior>().text = "Ultra Near Miss!";
