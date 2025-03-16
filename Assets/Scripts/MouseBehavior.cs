@@ -62,6 +62,11 @@ public class MouseBehavior : MonoBehaviour
                 hit.collider.gameObject.GetComponentInParent<HomeScreenBehavior>().EndHomeScreen();
             }
 
+            else if (hit.collider.gameObject.CompareTag("TP"))
+            {
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().RestartAltitude();
+            }
+
             
 
 

@@ -13,6 +13,7 @@ TagManager:
   - RightButton
   - HomeScreen
   - Enemy
+  - TP
   layers:
   - Default
   - TransparentFX

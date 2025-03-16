@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public int StartSubCount;
     public float time_between_increments;
     public int incramentSubs;
+    public float comboNumber;
+    public float decreaseFactor;
     public GameObject RefreshButton;
 
     [Header("Refresh Values")]
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
     public float current_altitude;
     public float nearMissCount;
     public float falling_velo;
+    public int missesToTP;
 
 
     [Header("Text Fields")]
@@ -47,8 +50,10 @@ public class GameManager : MonoBehaviour
     public GameObject TotalCountText;
     public GameObject Altitude_text;
     public GameObject NearMissCount_text;
+    public GameObject ComboText;
+    public GameObject TPButton;
 
-    
+
 
     private int RefreshCount;
     private int newSubs;
@@ -70,6 +75,8 @@ public class GameManager : MonoBehaviour
         CrashNoticeText.SetActive(false);
         index = 0;
         current_altitude = starting_altitude;
+        comboNumber = 1;
+        TPButton.SetActive(false);
     }
 
     // Update is called once per frame
@@ -80,12 +87,14 @@ public class GameManager : MonoBehaviour
         TotalCountText.GetComponent<TextMeshPro>().text = "Total Subs: " + RefreshCount.ToString();
         Altitude_text.GetComponent<TextMeshPro>().text = "Altitude: " + current_altitude.ToString();
         NearMissCount_text.GetComponent<TextMeshPro>().text = "Near Miss Count: " + nearMissCount.ToString();
+        int test = (int)(comboNumber);
+        ComboText.GetComponent<TextMeshPro>().text = "Combo: " + test.ToString();
 
         CalculateAltitude();
 
         if(t_sub > time_between_increments && !inPhoneEvent)
         {
-            CurrentSubCount += incramentSubs;
+            CurrentSubCount += (int)(incramentSubs * comboNumber);
             t_sub = 0;
         }
 
@@ -119,7 +128,27 @@ public class GameManager : MonoBehaviour
             t_enemy += Time.deltaTime;
         }
 
-        
+        if(comboNumber > 2)
+        {
+            comboNumber = (comboNumber - decreaseFactor * Time.deltaTime);
+        }
+
+        if(time_between_enemy_spawns > 1.5f)
+        {
+            time_between_enemy_spawns -= 0.001f * Time.deltaTime;
+
+        }
+
+        if(nearMissCount > missesToTP && !inPhoneEvent)
+        {
+            TPButton.SetActive(true);
+        }
+
+        else
+        {
+            TPButton.SetActive(false);
+        }
+
     }
 
     private void CalculateAltitude()
@@ -162,6 +191,33 @@ public class GameManager : MonoBehaviour
                 break;
 
         }
+    }
+
+    public void ChangeComboNumber(string type)
+    {
+        
+        switch (type) {
+            case "Near Miss!":
+                comboNumber += 2;
+                decreaseFactor = 0.5f;
+                break;
+            case "Super Near Miss!":
+                comboNumber += 5;
+                decreaseFactor = 0.9f;
+                break;
+
+            case "Ultra Near Miss!":
+                comboNumber += 10;
+                decreaseFactor = 2;
+                break;
+
+            default:
+                comboNumber *= 1;
+                break;
+        
+        }
+
+
     }
 
     private void AdEvent()
@@ -213,5 +269,13 @@ public class GameManager : MonoBehaviour
         return index;
     }
 
-
+    public void RestartAltitude()
+    {
+        if (nearMissCount > missesToTP)
+        {
+            current_altitude = starting_altitude;
+            nearMissCount -= missesToTP;
+        }
+            
+    }
 }

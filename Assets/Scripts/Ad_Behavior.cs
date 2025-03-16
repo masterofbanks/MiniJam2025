@@ -8,15 +8,15 @@ public class Ad_Behavior : MonoBehaviour
     public Transform[] spawnPositions;
     public int numClicks;
 
-    private int s_index;
+    public int s_index;
     private Transform spawnPos;
-    private int num_Xs;
+    public int num_Xs;
     private GameObject X;
     // Start is called before the first frame update
     void Start()
     {
         System.Random rand = new System.Random();
-        s_index = rand.Next(spawnPositions.Length);
+        s_index = rand.Next(spawnPositions.Length);//
         spawnPos = spawnPositions[s_index];
         X = Instantiate(X_Object, spawnPos.position, spawnPos.rotation, transform);
         num_Xs = 0;

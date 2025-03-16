@@ -137,6 +137,7 @@ public class SkyDiverController : MonoBehaviour
                 Debug.Log("near Miss!!");
                 NearMissText.GetComponent<NMNotifierBehavior>().text = "Near Miss!";
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount++;
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ChangeComboNumber("Near Miss!");
 
             }
 
@@ -145,13 +146,15 @@ public class SkyDiverController : MonoBehaviour
                 Debug.Log("Super Near Miss!!");
                 NearMissText.GetComponent<NMNotifierBehavior>().text = "Super Near Miss!";
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount+=3;
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ChangeComboNumber("Super Near Miss!");
             }
 
-            else if(distanceToEnemy > 0.3f)
+            else if(distanceToEnemy > 0.6f)
             {
                 Debug.Log("Ultra Near Miss!!");
                 NearMissText.GetComponent<NMNotifierBehavior>().text = "Ultra Near Miss!";
                 GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount += 5;
+                GameObject.FindWithTag("GameManager").GetComponent<GameManager>().ChangeComboNumber("Ultra Near Miss!");
             }
 
 
@@ -186,7 +189,8 @@ public class SkyDiverController : MonoBehaviour
     IEnumerator HitRoutine()
     {
         hit = true;
-        if(health > 0)
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().nearMissCount = 0;
+        if (health > 0)
         {
             health--;
 
