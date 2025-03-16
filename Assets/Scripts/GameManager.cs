@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +23,12 @@ public class GameManager : MonoBehaviour
     [Header("Phone Event Values")]
     public float time_between_phone_events;
 
+    [Header("Ending UI")]
+    public GameObject ReplayButton;
+    public TextMeshProUGUI SubCountScore;
+    public TextMeshProUGUI HighScore;
+    
+    
     [Header("Ad Values")]
     public GameObject Ad;
 
@@ -335,5 +342,25 @@ public class GameManager : MonoBehaviour
             nearMissCount -= missesToTP;
         }
             
+    }
+
+    public void StartEndingUI()
+    {
+        SubCountScore.text = "Sub Count: " + RefreshCount.ToString();
+        if (PlayerPrefs.GetInt("high_score") < RefreshCount)
+        {
+            PlayerPrefs.SetInt("high_score", RefreshCount);
+        }
+        HighScore.text = "HighScore: " + PlayerPrefs.GetInt("high_score").ToString();
+
+        ReplayButton.SetActive(true);
+        SubCountScore.enabled = true;
+        HighScore.enabled = true;
+        
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("GamePlay");
     }
 }

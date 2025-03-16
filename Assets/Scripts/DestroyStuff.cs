@@ -34,6 +34,7 @@ public class DestroyStuff : MonoBehaviour
         else if (collision.gameObject.CompareTag("Numba"))
         {
             Instantiate(explostion, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StartEndingUI();
             Destroy(collision.gameObject);
         }
     }
