@@ -17,6 +17,8 @@ TagManager:
   - BG
   - Settings
   - Wifi
+  - On
+  - Numba
   layers:
   - Default
   - TransparentFX
@@ -56,4 +58,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1595956653
+    locked: 0
+  - name: Mouse
+    uniqueID: 4247612375
     locked: 0

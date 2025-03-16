@@ -81,6 +81,16 @@ public class MouseBehavior : MonoBehaviour
                 }
             }
 
+            else if (hit.collider.gameObject.CompareTag("On"))
+            {
+                hit.collider.gameObject.GetComponentInParent<OffScreenBehavior>().TurnOn();
+            }
+
+            else if (hit.collider.gameObject.CompareTag("Numba"))
+            {
+                hit.collider.gameObject.GetComponentInParent<OffScreenBehavior>().AddNumber(hit.collider.gameObject.name);
+            }
+
             
 
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class DestroyStuff : MonoBehaviour
 {
     public GameObject bgc;
+    public GameObject explostion;
     public Transform bgc_spawnPos;
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,12 @@ public class DestroyStuff : MonoBehaviour
         else if (collision.gameObject.CompareTag("BG"))
         {
             Instantiate(bgc, bgc_spawnPos.position, bgc_spawnPos.rotation);
+        }
+
+        else if (collision.gameObject.CompareTag("Numba"))
+        {
+            Instantiate(explostion, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
+            Destroy(collision.gameObject);
         }
     }
 }

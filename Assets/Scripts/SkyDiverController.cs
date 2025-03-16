@@ -9,7 +9,7 @@ public class SkyDiverController : MonoBehaviour
     public float horizontal_speed;
     public LayerMask EnemyMask;
     public GameObject[] hearts;
-    private int health;
+    public int health;
     private int starting_Health;
 
     [Header("Near Miss Values")]

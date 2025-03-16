@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [Header("Ad Values")]
     public GameObject Ad;
 
+    [Header("Off Values")]
+    public GameObject Off;
+
     [Header("Crash Values")]
     public GameObject CrashNoticeText;
     public GameObject DisconnectNoticeText;
@@ -39,12 +42,16 @@ public class GameManager : MonoBehaviour
     public Transform[] w_spawn_positions;
 
     [Header("Diver Side Valuues")]
+    public SkyDiverController diveScript;
     public float starting_altitude;
     public float current_altitude;
     public float nearMissCount;
     public float falling_velo;
     public int missesToTP;
     public Transform background_target;
+    public GameObject deathCam;
+    public GameObject gameCam;
+    public GameObject deathPlayer;
 
 
     [Header("Text Fields")]
@@ -57,7 +64,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    private int RefreshCount;
+    public int RefreshCount;
     private int newSubs;
     private int CurrentSubCount;
     private float t_sub;
@@ -65,9 +72,11 @@ public class GameManager : MonoBehaviour
     private float t_enemy;
     private bool inPhoneEvent;
     private int index;
+    private bool playerDead;
     // Start is called before the first frame update
     void Start()
     {
+        diveScript = GameObject.FindWithTag("Player").GetComponent<SkyDiverController>();
         CurrentSubCount = StartSubCount;
         RefreshCount = StartSubCount;
         newSubs = 0;
@@ -85,7 +94,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         SubCountText.GetComponent<TextMeshPro>().text = "New Subs: " + newSubs.ToString();
         TotalCountText.GetComponent<TextMeshPro>().text = "Total Subs: " + RefreshCount.ToString();
         Altitude_text.GetComponent<TextMeshPro>().text = "Altitude: " + current_altitude.ToString();
@@ -93,69 +101,86 @@ public class GameManager : MonoBehaviour
         int test = (int)(comboNumber);
         ComboText.GetComponent<TextMeshPro>().text = "Combo: " + test.ToString();
 
-        CalculateAltitude();
 
-        if(t_sub > time_between_increments && !inPhoneEvent)
+        if (!playerDead)
         {
-            CurrentSubCount += (int)(incramentSubs * comboNumber);
-            t_sub = 0;
+            Death();
+            CalculateAltitude();
+
+            if (t_sub > time_between_increments && !inPhoneEvent)
+            {
+                CurrentSubCount += (int)(incramentSubs * comboNumber);
+                t_sub = 0;
+            }
+
+            else if (!inPhoneEvent)
+            {
+                t_sub += Time.deltaTime;
+            }
+
+            if (t_phone > time_between_phone_events && !inPhoneEvent)
+            {
+                inPhoneEvent = true;
+                System.Random rand = new System.Random();
+                index = rand.Next(0, 4);
+                ChoosePhoneEvent(index);
+                t_phone = 0;
+            }
+
+            else if (!inPhoneEvent)
+            {
+                t_phone += Time.deltaTime;
+            }
+
+            if (t_enemy > time_between_enemy_spawns)
+            {
+                SpawnEnemy();
+                t_enemy = 0;
+            }
+
+            else
+            {
+                t_enemy += Time.deltaTime;
+            }
+
+            if (comboNumber > 2)
+            {
+                comboNumber = (comboNumber - decreaseFactor * Time.deltaTime);
+            }
+
+            if (time_between_enemy_spawns > 0.85f)
+            {
+                time_between_enemy_spawns -= 0.0025f * Time.deltaTime;
+
+            }
+
+            if (nearMissCount > missesToTP && !inPhoneEvent)
+            {
+                TPButton.SetActive(true);
+            }
+
+            else
+            {
+                TPButton.SetActive(false);
+            }
+
+            if (falling_velo < 100)
+                falling_velo += 0.0002f * Time.deltaTime;
         }
-
-        else if(!inPhoneEvent)
-        {
-            t_sub += Time.deltaTime;
-        }
-
-        if (t_phone > time_between_phone_events && !inPhoneEvent)
-        {
-            inPhoneEvent = true;
-            System.Random rand = new System.Random();
-            index = rand.Next(0, 3);
-            ChoosePhoneEvent(index);
-            t_phone = 0;
-        }
-
-        else if(!inPhoneEvent)
-        {
-            t_phone += Time.deltaTime;
-        }
-
-        if(t_enemy > time_between_enemy_spawns)
-        {
-            SpawnEnemy();
-            t_enemy = 0;
-        }
-
-        else
-        {
-            t_enemy += Time.deltaTime;
-        }
-
-        if(comboNumber > 2)
-        {
-            comboNumber = (comboNumber - decreaseFactor * Time.deltaTime);
-        }
-
-        if(time_between_enemy_spawns > 0.85f)
-        {
-            time_between_enemy_spawns -= 0.0025f * Time.deltaTime;
-
-        }
-
-        if(nearMissCount > missesToTP && !inPhoneEvent)
-        {
-            TPButton.SetActive(true);
-        }
-
-        else
-        {
-            TPButton.SetActive(false);
-        }
-
-        falling_velo += 0.0002f * Time.deltaTime;
+        
 
     }
 
+    private void Death()
+    {
+        if(current_altitude < 100 || diveScript.health == 0)
+        {
+            playerDead = true;
+            gameCam.SetActive(false);
+            deathCam.SetActive(true);
+            deathPlayer.GetComponent<Rigidbody2D>().gravityScale = 5;
+        }
+    }
     private void CalculateAltitude()
     {
         
@@ -193,6 +218,9 @@ public class GameManager : MonoBehaviour
                 break;
             case 2:
                 DisconnectEvent();
+                break;
+            case 3:
+                OffEvent();
                 break;
             default:
                 AdEvent();
@@ -276,6 +304,11 @@ public class GameManager : MonoBehaviour
         RefreshButton.SetActive(true);
     }
 
+    public void OffEvent()
+    {
+        Instantiate(Off, black_screen_pos.position, black_screen_pos.rotation);
+        RefreshButton.SetActive(false);
+    }
     IEnumerator RefreshRoutine()
     {
         Instantiate(black_screen, black_screen_pos.position, black_screen_pos.rotation);
