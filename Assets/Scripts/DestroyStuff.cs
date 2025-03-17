@@ -6,6 +6,7 @@ public class DestroyStuff : MonoBehaviour
 {
     public GameObject bgc;
     public GameObject explostion;
+    public GameObject explostion_sfx;
     public Transform bgc_spawnPos;
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class DestroyStuff : MonoBehaviour
         else if (collision.gameObject.CompareTag("Numba"))
         {
             Instantiate(explostion, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
+            Instantiate(explostion_sfx, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
             GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StartEndingUI();
             Destroy(collision.gameObject);
         }

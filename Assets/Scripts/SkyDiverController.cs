@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,10 +25,16 @@ public class SkyDiverController : MonoBehaviour
     public Transform right_position;
     public Transform med_position;
 
+    [Header("Sound Effects")]
+    public GameObject impact;
+    public GameObject dash;
+
+
     //components
     private Rigidbody2D rb;
     private InputAction move;
     public PlayerInputActions PIAs;
+    private Animator anime;
 
     //keyValues
     private Vector2 rawDirectionInputs;
@@ -36,7 +43,9 @@ public class SkyDiverController : MonoBehaviour
     private float distanceToEnemy;
     private bool showNearMiss;
     private bool hit;
-    private float hitDuration = 0.1f;
+    private bool facingRight;
+    private float hitDuration = 0.2f;
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -46,6 +55,8 @@ public class SkyDiverController : MonoBehaviour
         hit = false;
         starting_Health = hearts.Length * 2;
         health = starting_Health;
+        facingRight = true;
+        anime = GetComponent<Animator>();
     }
 
     private void Awake()
@@ -55,14 +66,31 @@ public class SkyDiverController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anime.SetBool("hit", hit);
         rawDirectionInputs = move.ReadValue<Vector2>();
         DirectionalInput = new Vector2(System.Math.Sign(rawDirectionInputs.x), System.Math.Sign(rawDirectionInputs.y));
         HandleMisses();
         ShootRay();
         HandleInput();
+        Flip();
         HandleHealth();
         var step = horizontal_speed * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, target, step);
+    }
+
+    private void Flip()
+    {
+        if (facingRight && System.Math.Sign(DirectionalInput.x) == -1.0f)
+        {
+            transform.localScale = new Vector3(-1 * transform.localScale.x, 1, 1);
+            facingRight = !facingRight;
+        }
+
+        else if (!facingRight && System.Math.Sign(DirectionalInput.x) == 1.0f)
+        {
+            transform.localScale = new Vector3(-1 * transform.localScale.x, 1, 1);
+            facingRight = !facingRight;
+        }
     }
 
     private void HandleInput()
@@ -74,13 +102,13 @@ public class SkyDiverController : MonoBehaviour
             {
                 if(DirectionalInput.x == 1)
                 {
-                    
+                    Instantiate(dash, transform.position, transform.rotation);
                     target = right_position.position;
                 }
 
                 else if(DirectionalInput.x == -1)
                 {
-                    
+                    Instantiate(dash, transform.position, transform.rotation);
 
                     target = left_position.position;
                 }
@@ -88,6 +116,7 @@ public class SkyDiverController : MonoBehaviour
 
             else if ((target == left_position.position && DirectionalInput.x == 1) || (target == right_position.position && DirectionalInput.x == -1))
             {
+                Instantiate(dash, transform.position, transform.rotation);
                 target = med_position.position;
 
 
@@ -182,6 +211,8 @@ public class SkyDiverController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Player Hit!!");
+            Destroy(collision.gameObject);
+            Instantiate(impact, transform.position, transform.rotation);
             StartCoroutine(HitRoutine());
         }
     }

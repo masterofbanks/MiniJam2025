@@ -70,6 +70,10 @@ public class GameManager : MonoBehaviour
     public GameObject TPButton;
     public GameObject Tutorials;
 
+    [Header("SFX")]
+    public GameObject turn_off_sfx;
+    public GameObject tp_sfx;
+
 
 
     private int RefreshCount;
@@ -176,6 +180,11 @@ public class GameManager : MonoBehaviour
             if (falling_velo < 100)
                 falling_velo += 0.0002f * Time.deltaTime;
         }
+
+        else
+        {
+            GetComponent<AudioSource>().enabled = false;
+        }
         
 
     }
@@ -216,6 +225,8 @@ public class GameManager : MonoBehaviour
 
     private void ChoosePhoneEvent(int index)
     {
+        Instantiate(turn_off_sfx, transform.position, transform.rotation);
+
         //Debug.Log(index);
         switch (index)
         {
@@ -224,11 +235,11 @@ public class GameManager : MonoBehaviour
                 AdEvent();
                 break;
             case 1:
-                Tutorials.GetComponent<TextMeshPro>().text = "Click the Home Button, then the white rectangle, then the red square!";
+                Tutorials.GetComponent<TextMeshPro>().text = "Click the Home Button, then the arrow, then the Youtube App!";
                 CrashEvent();
                 break;
             case 2:
-                Tutorials.GetComponent<TextMeshPro>().text = "Click the Home Button, then the grey square, then the wifi button!";
+                Tutorials.GetComponent<TextMeshPro>().text = "Click the Home Button, then the settings button, then the wifi button!";
                 DisconnectEvent();
                 break;
             case 3:
@@ -345,6 +356,8 @@ public class GameManager : MonoBehaviour
     {
         if (nearMissCount > missesToTP)
         {
+            Instantiate(tp_sfx, transform.position, transform.rotation);
+
             current_altitude = starting_altitude;
             nearMissCount -= missesToTP;
         }

@@ -18,13 +18,13 @@ public class MouseBehavior : MonoBehaviour
     }
     void Start()
     {
-        Cursor.visible = false;
+
     }
 
     void Update()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z);
+        //Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z);
     }
 
     private void Click(InputAction.CallbackContext context)
