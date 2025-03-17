@@ -8,6 +8,7 @@ public class DestroyStuff : MonoBehaviour
     public GameObject explostion;
     public GameObject explostion_sfx;
     public Transform bgc_spawnPos;
+    public Leaderboard leaderboard;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,10 +35,19 @@ public class DestroyStuff : MonoBehaviour
 
         else if (collision.gameObject.CompareTag("Numba"))
         {
-            Instantiate(explostion, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
-            Instantiate(explostion_sfx, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StartEndingUI();
+            Vector3 pos = collision.transform.position;
             Destroy(collision.gameObject);
+            StartCoroutine(DeathRoutine(pos));
+            
         }
+    }
+
+    IEnumerator DeathRoutine(Vector3 t)
+    {
+        Instantiate(explostion, t, Quaternion.identity);
+        Instantiate(explostion_sfx, t, Quaternion.identity);
+        GameObject.FindWithTag("GameManager").GetComponent<GameManager>().StartEndingUI();
+        yield return leaderboard.SubmitScoreRoutine(PlayerPrefs.GetInt("high_score"));
+        
     }
 }

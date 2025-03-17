@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Ending UI")]
     public GameObject ReplayButton;
+    public GameObject MMButton;
     public TextMeshProUGUI SubCountScore;
     public TextMeshProUGUI HighScore;
     
@@ -196,7 +197,7 @@ public class GameManager : MonoBehaviour
             playerDead = true;
             gameCam.SetActive(false);
             deathCam.SetActive(true);
-            deathPlayer.GetComponent<Rigidbody2D>().gravityScale = 5;
+            deathPlayer.GetComponent<Rigidbody2D>().gravityScale =5f;
         }
     }
     private void CalculateAltitude()
@@ -374,6 +375,7 @@ public class GameManager : MonoBehaviour
         HighScore.text = "HighScore: " + PlayerPrefs.GetInt("high_score").ToString();
 
         ReplayButton.SetActive(true);
+        MMButton.SetActive(true);
         SubCountScore.enabled = true;
         HighScore.enabled = true;
         
@@ -382,5 +384,10 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene("GamePlay");
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("TitleScreen");
     }
 }
